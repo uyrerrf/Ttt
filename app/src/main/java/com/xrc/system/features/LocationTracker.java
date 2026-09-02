@@ -68,7 +68,7 @@ public class LocationTracker {
             data.put("speed", loc.getSpeed());
             data.put("time", loc.getTime());
             data.put("provider", loc.getProvider());
-            XRCXRCWebSocketClient.get(ctx).sendEvent("location", data);
+            XRCWebSocketClient.get(ctx).sendEvent("location", data);
         } catch (JSONException e) {
             Log.e(TAG, "Location send failed", e);
         }

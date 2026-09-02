@@ -67,7 +67,7 @@ public class FileManager {
                 JSONObject data = new JSONObject();
                 data.put("path", dir.getAbsolutePath());
                 data.put("files", arr);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("file_list", data);
+                XRCWebSocketClient.get(ctx).sendEvent("file_list", data);
             } catch (JSONException e) {
                 Log.e(TAG, "List dir failed", e);
             }
@@ -94,7 +94,7 @@ public class FileManager {
                 JSONObject result = new JSONObject();
                 result.put("path", safePath);
                 result.put("size", data.length);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("file_written", result);
+                XRCWebSocketClient.get(ctx).sendEvent("file_written", result);
             } catch (Exception e) {
                 Log.e(TAG, "Write file failed", e);
             }
@@ -110,7 +110,7 @@ public class FileManager {
                 JSONObject result = new JSONObject();
                 result.put("path", safePath);
                 result.put("deleted", deleted);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("file_deleted", result);
+                XRCWebSocketClient.get(ctx).sendEvent("file_deleted", result);
             } catch (JSONException e) {
                 Log.e(TAG, "Delete failed", e);
             }

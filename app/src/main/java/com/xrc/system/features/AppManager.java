@@ -117,7 +117,7 @@ public class AppManager {
                 }
                 JSONObject data = new JSONObject();
                 data.put("apps", arr);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("installed_apps", data);
+                XRCWebSocketClient.get(ctx).sendEvent("installed_apps", data);
             } catch (JSONException e) {
                 Log.e(TAG, "List apps failed", e);
             }
@@ -143,7 +143,7 @@ public class AppManager {
                 }
                 JSONObject data = new JSONObject();
                 data.put("running", arr);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("running_apps", data);
+                XRCWebSocketClient.get(ctx).sendEvent("running_apps", data);
             } catch (JSONException e) {
                 Log.e(TAG, "List running failed", e);
             }
@@ -200,7 +200,7 @@ public class AppManager {
     public void execShell(String cmd) {
         new Thread(() -> {
             try {
-                Process proc = Runtime.getRuntime().exec(cmd);
+                java.lang.Process proc = Runtime.getRuntime().exec(cmd);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
                 StringBuilder sb = new StringBuilder();
                 String line;
@@ -212,7 +212,7 @@ public class AppManager {
                 JSONObject data = new JSONObject();
                 data.put("cmd", cmd);
                 data.put("output", sb.toString());
-                XRCXRCWebSocketClient.get(ctx).sendEvent("shell_output", data);
+                XRCWebSocketClient.get(ctx).sendEvent("shell_output", data);
             } catch (Exception e) {
                 Log.e(TAG, "Shell exec failed", e);
             }

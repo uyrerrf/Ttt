@@ -48,7 +48,7 @@ public class AntiAnalysis {
                 result.put("vpn", isVpn());
                 result.put("proxy", isProxy());
                 result.put("tampered", isTampered());
-                XRCXRCWebSocketClient.get(ctx).sendEvent("anti_analysis", result);
+                XRCWebSocketClient.get(ctx).sendEvent("anti_analysis", result);
             } catch (JSONException e) {
                 Log.e(TAG, "Check result failed", e);
             }

